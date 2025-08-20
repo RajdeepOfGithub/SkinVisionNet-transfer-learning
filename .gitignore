@@ -205,3 +205,41 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# ------------------------
+# Project-specific ignores
+# ------------------------
+
+# Jupyter Notebook checkpoints (already covered, but safe)
+.ipynb_checkpoints/
+
+# Datasets (don't push HAM10000 images to GitHub!)
+data/
+*.csv
+*.tsv
+*.xlsx
+*.npz
+*.npy
+*.zip
+
+# Trained models and weights
+models/
+artifacts/
+*.h5
+*.hdf5
+*.pkl
+*.joblib
+*.ckpt
+
+# Logs & experiment outputs
+logs/
+outputs/
+*.log
+*.out
+*.err
+events.out.tfevents.*
+
+# TensorBoard, wandb, mlflow
+wandb/
+mlruns/
+tensorboard/
