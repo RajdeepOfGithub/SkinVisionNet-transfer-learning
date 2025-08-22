@@ -243,3 +243,17 @@ events.out.tfevents.*
 wandb/
 mlruns/
 tensorboard/
+
+# Project data 
+data/raw/
+data/processed/
+Datasets/
+skin_lesion_types/
+
+# Large artifacts
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.ckpt
+hmnist_64_64_RGB.csv
