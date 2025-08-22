@@ -1,0 +1,12 @@
+#Core
+numpy
+pandas
+matplotlib
+seaborn
+
+# DL
+tensorflow>=2.8
+scikit-learn
+
+# Image handling
+Pillow
