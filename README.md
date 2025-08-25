@@ -4,15 +4,40 @@ This repository is based on the **HAM10000 dataset**, a large collection of derm
   - To classify 7 types of skin lesions from the HAM10000 dataset using deep convolutional neural networks (DCNNs), by fine-tuning pretrained models (VGG16, InceptionV3, Inception-ResNetV2, DenseNet201) and comparing their performance.
   - The project specifically explores whether transfer learning (using ImageNet-trained models) can adapt well to medical images (dermatoscopic lesions).
 
-- **Progress so far**  
-  Up to this stage, we have focused on **exploratory data analysis (EDA) and preprocessing**:
-  - Loaded metadata and linked it to the 10,015 dermatoscopic images.  
-  - Added columns for human-readable lesion names, binary labels (benign vs malignant), and numeric class indices.  
-  - Explored dataset imbalance (many more benign nevi than malignant lesions).  
-  - Visualized lesion distribution by type, localization, diagnosis method, age, and sex.  
-  - Displayed sample images by class and investigated color channel statistics (RGB means, gray levels).  
-  - Preprocessed images by resizing, normalizing, and splitting into train/validation/test sets.  
-  - Saved processed datasets as `.npy` arrays and a flattened CSV for future model training.  
+- ## Progress so far
+### 1. Exploratory Data Analysis (EDA)
+- Linked 10,015 image files with metadata  
+- Added columns:  
+  - `cell_type` (human-readable class name)  
+  - `cell_type_idx` (numeric code 0–6)  
+  - `Malignant` (binary: benign=0, malignant=1)  
+- Explored dataset imbalance (many benign nevi vs fewer malignant cases)  
+- Visualized distributions:
+  - Lesion type counts  
+  - Benign vs malignant cases  
+  - Age, sex, body localization, and diagnosis method  
+- Color analysis:
+  - Mean RGB + grayscale values per image  
+  - Sampled pairplots of lesion separability  
+- Stratified **train/validation/test** split (72/18/10%)  
+- Saved metadata as `data/processed/meta_ready.parquet` for reproducibility
+
+### 2. Baseline CNN (Scratch)
+- Small CNN trained on **64×64 resized images**  
+- Architecture: 3 conv + pooling blocks + dense head  
+- Data augmentation (random flips, shuffling)  
+- Used class weights to handle imbalance  
+- **Result:** ~54% test accuracy (mostly predicting “nevi”)  
+- Served as a benchmark for transfer learning
+
+### 3. VGG16 (Transfer Learning)
+- Input size **224×224**  
+- Stage A: freeze base, train new head (3 epochs)  
+- Stage B: unfreeze `block5_*` and fine-tune (20 epochs, lr=1e-4)  
+- **Result:** ~62% test accuracy  
+  - Stronger recognition of minority classes (Actinic keratoses recall ~0.79)  
+  - Weighted F1 ~0.65 (up from 0.53 baseline)  
+- Confirmed benefit of transfer learning
 
 ---
 
@@ -85,12 +110,12 @@ This repository is based on the **HAM10000 dataset**, a large collection of derm
 
 ## Next Steps
 
-- Implement **baseline CNN** (from scratch)  
-- Fine-tune pretrained models:
-  - VGG16
-  - InceptionV3
-  - Inception-ResNetV2
-  - DenseNet201
+Next Steps
+- Implement **InceptionV3** fine-tuning (299×299 inputs)  
+- Add **DenseNet201** (full model fine-tuning)  
+- Combine models into an **ensemble**   
+- Document final results and comparisons
+
 
 ---
 
@@ -100,3 +125,4 @@ Install dependencies with:
 
 ```bash
 pip install -r requirements.txt
+```
