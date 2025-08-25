@@ -257,3 +257,4 @@ skin_lesion_types/
 *.hdf5
 *.ckpt
 hmnist_64_64_RGB.csv
+echo -e "\n# macOS junk\n.DS_Store\n\n# Keras/TensorFlow checkpoints\nNotebooks/checkpoints/\n" >> .gitignore
